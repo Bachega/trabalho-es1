@@ -1,59 +1,54 @@
 package com.teste.apirest.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="Produto")
-public class Produto implements Serializable {
+@Table(name="PostagemUsuario")
+public class PostagemUsuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	private String nome;
-	private BigDecimal quantidade;
-	private BigDecimal valor;
+	@ManyToOne
+	@JoinColumn(name="ID_Usuario")
+	private Usuario usuario;
 	
+	private String nome;
+
 	public long getId() {
 		return id;
 	}
-	
+
 	public void setId(long id) {
 		this.id = id;
 	}
 	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
 	public String getNome() {
 		return nome;
 	}
-	
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	public BigDecimal getQuantidade() {
-		return quantidade;
-	}
-	
-	public void setQuantidade(BigDecimal quantidade) {
-		this.quantidade = quantidade;
-	}
-	
-	public BigDecimal getValor() {
-		return valor;
-	}
-	
-	public void setValor(BigDecimal valor) {
-		this.valor = valor;
-	}
-	
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}

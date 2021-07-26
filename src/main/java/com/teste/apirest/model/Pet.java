@@ -1,7 +1,6 @@
 package com.teste.apirest.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,23 +8,29 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="Usuario")
-public class Usuario implements Serializable {
+@Table(name="Pet")
+public class Pet implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
+	@OneToOne
+	@JoinColumn(name="ID_Tipo_Pet")
+	private TipoPet tipoPet;
+	
 	@ManyToOne
-	@JoinColumn(name="ID_Genero")
-	private Genero genero;
+	@JoinColumn(name="ID_Usuario")
+	private Usuario usuario;
+	
 	private String nome;
-	private String sobrenome;
-	private Date dataNascimento;
+	private int faixaEtaria;
+	private int sexo;
 	
 	public long getId() {
 		return id;
@@ -35,14 +40,22 @@ public class Usuario implements Serializable {
 		this.id = id;
 	}
 	
-	public Genero getGenero() {
-		return genero;
+	public TipoPet getTipoPet() {
+		return tipoPet;
 	}
-
-	public void setGenero(Genero genero) {
-		this.genero = genero;
+	
+	public void setTipoPet(TipoPet tipoPet) {
+		this.tipoPet = tipoPet;
 	}
-
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	
 	public String getNome() {
 		return nome;
 	}
@@ -51,20 +64,20 @@ public class Usuario implements Serializable {
 		this.nome = nome;
 	}
 	
-	public String getSobrenome() {
-		return sobrenome;
+	public int getFaixaEtaria() {
+		return faixaEtaria;
 	}
 	
-	public void setSobrenome(String sobrenome) {
-		this.sobrenome = sobrenome;
+	public void setFaixaEtaria(int faixaEtaria) {
+		this.faixaEtaria = faixaEtaria;
 	}
 	
-	public Date getDataNascimento() {
-		return dataNascimento;
+	public int getSexo() {
+		return sexo;
 	}
 	
-	public void setDataNascimento(Date dataNascimento) {
-		this.dataNascimento = dataNascimento;
+	public void setSexo(int sexo) {
+		this.sexo = sexo;
 	}
 	
 	public static long getSerialversionuid() {

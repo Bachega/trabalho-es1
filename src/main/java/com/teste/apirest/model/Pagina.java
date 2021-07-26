@@ -1,18 +1,21 @@
 package com.teste.apirest.model;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="Login")
-public class Login implements Serializable {
+@Table(name="Pagina")
+public class Pagina implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -22,13 +25,18 @@ public class Login implements Serializable {
 	@OneToOne
 	@JoinColumn(name="ID_Usuario")
 	private Usuario usuario;
-	private String email;
-	private String senha;
+	
+	private String nome;
+	private int avaliacao;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="ID_Pagina")
+	private List<PostagemPagina> posts;
 	
 	public long getId() {
 		return id;
 	}
-
+	
 	public void setId(long id) {
 		this.id = id;
 	}
@@ -41,22 +49,34 @@ public class Login implements Serializable {
 		this.usuario = usuario;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getNome() {
+		return nome;
 	}
 	
-	public void setEmail(String email) {
-		this.email = email;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 	
-	public String getSenha() {
-		return senha;
+	public int getAvaliacao() {
+		return avaliacao;
 	}
 	
-	public void setSenha(String senha) {
-		this.senha = senha;
+	public void setAvaliacao(int avaliacao) {
+		this.avaliacao = avaliacao;
 	}
 	
+	public List<PostagemPagina> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<PostagemPagina> posts) {
+		this.posts = posts;
+	}
+	
+	public void addPost(PostagemPagina post) {
+		posts.add(post);
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}

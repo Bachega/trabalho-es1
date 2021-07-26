@@ -1,8 +1,7 @@
 package com.teste.apirest.resource;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,47 +10,58 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.teste.apirest.model.Login;
-import com.teste.apirest.repository.LoginRepository;
+import com.teste.apirest.model.Usuario;
+import com.teste.apirest.service.LoginService;
 
 @RestController
-@RequestMapping(value="/api")
+@RequestMapping(value="/login")
 public class LoginResource {
 	
 	@Autowired
-	LoginRepository loginRepository;
+	private LoginService loginService;
 	
-	@GetMapping("/dologin")
-	public String listaLogin(@RequestBody Login login) {
-		int id = -1;
+	@GetMapping("/do")
+	public Usuario doLogin(@RequestBody Login login) {
+		Usuario u = loginService.doLogin(login);
 		
-		try {
-			id = loginRepository.doLogin(login.getEmail(), login.getSenha());
-		} catch(Exception e) {
-			id = -1;
-		}
+		if(u == null)
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		
-		return "{\"id_usuario\":" + id + "}";
+		return u;	
 	}
 	
-	@GetMapping("/login/{id}")
-	public Login listaLoginUnico(@PathVariable(value="id") long id) {
-		return loginRepository.findById(id);
+	@GetMapping("/get/{id}")
+	public Login getLoginById(@PathVariable(value="id") long id) {
+		Login l = loginService.getLoginById(id);
+		
+		if(l == null)
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		
+		return l;
 	}
 	
-	@PostMapping("/login")
-	public Login salvaLogin(@RequestBody Login login) {
-		return loginRepository.save(login);
-	}
+	@PostMapping("/cadastrar/{id}")
+	public Login salvaLogin(@RequestBody Login login, @PathVariable(value="id") long id) {
+		Login l = loginService.createLogin(login, id);
+		
+		if(l == null)
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		
+		return l;
+	}	
 	
-	@DeleteMapping("/login")
+	
+	@DeleteMapping("/deletar")
 	public void deleteLogin(@RequestBody Login login) {
-		loginRepository.delete(login);
+		loginService.deleteLogin(login);
 	}
 	
-	@PutMapping("/login")
+	@PutMapping("/atualizar")
 	public Login atualizaLogin(@RequestBody Login login) {
-		return loginRepository.save(login);
+		return loginService.updateLogin(login);
 	}
+	
 }
